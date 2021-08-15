@@ -1,5 +1,7 @@
 import bisect
 import copy
+import collections
+import copy
 import math
 import random
 from collections import defaultdict
@@ -654,7 +656,6 @@ class MultiImageMixDataset:
         if hasattr(self.dataset, 'flag'):
             self.flag = dataset.flag
         self.num_samples = len(dataset)
-        self.img_scale = img_scale
         if dynamic_scale is not None:
             assert isinstance(dynamic_scale, tuple)
         self._dynamic_scale = dynamic_scale
@@ -663,7 +664,7 @@ class MultiImageMixDataset:
         return self.num_samples
 
     def __getitem__(self, idx):
-        results = copy.deepcopy(self.dataset[idx])
+        results = self.dataset[idx]
         for (transform, transform_type) in zip(self.pipeline,
                                                self.pipeline_types):
             if self._skip_type_keys is not None and \
@@ -678,12 +679,10 @@ class MultiImageMixDataset:
                     copy.deepcopy(self.dataset[index]) for index in indexes
                 ]
                 results['mix_results'] = mix_results
-
-            if self._dynamic_scale is not None:
-                # Used for subsequent pipeline to automatically change
-                # the output image size. E.g MixUp, Resize.
-                results['scale'] = self._dynamic_scale
-
+                if self._dynamic_scale is not None:
+                    # Used for subsequent pipeline to automatically change
+                    # the output image size. E.g MixUp, Resize.
+                    results['img_scale'] = self._dynamic_scale
             results = transform(results)
 
             if 'mix_results' in results:

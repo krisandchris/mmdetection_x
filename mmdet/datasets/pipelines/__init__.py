@@ -11,7 +11,7 @@ from .test_time_aug import MultiScaleFlipAug
 from .transforms import (Albu, CutOut, Expand, MinIoURandomCrop, MixUp, Mosaic,
                          Normalize,Pad, PhotoMetricDistortion, RandomCenterCropPad,
                          RandomCrop, RandomFlip, RandomShift, Resize,
-                         SegRescale, RandomAffineOrPerspective, YoloXColorJit)
+                         SegRescale, RandomAffineOrPerspective, YoloXColorJit, RandomAffine)
 
 __all__ = [
     'Compose', 'to_tensor', 'ToTensor', 'ImageToTensor', 'ToDataContainer',
@@ -23,5 +23,5 @@ __all__ = [
     'InstaBoost', 'RandomCenterCropPad', 'AutoAugment', 'CutOut', 'Shear',
     'Rotate', 'ColorTransform', 'EqualizeTransform', 'BrightnessTransform',
     'ContrastTransform', 'Translate', 'RandomShift', 'RandomAffineOrPerspective'
-    'MixUp', 'Mosaic'
+    'MixUp', 'Mosaic', 'RandomAffine'
 ]
