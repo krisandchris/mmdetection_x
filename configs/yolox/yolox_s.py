@@ -57,8 +57,8 @@ train_dataset = dict(
     type='MosaicMixUpDataset',
     dataset=dict(
         type='CocoDataset',
-        ann_file=data_root + 'annotations/instances_train2017.json',
-        img_prefix=data_root + 'train2017/',
+        ann_file=data_root + 'annotations/coco_train.json',
+        img_prefix=data_root + 'train/',
         pipeline=[
             dict(type='LoadImageFromFile', to_float32=True),
             dict(type='LoadAnnotations', with_bbox=True)
@@ -96,13 +96,13 @@ data = dict(
     train=train_dataset,
     test=dict(
         type='CocoDataset',
-        ann_file=data_root + 'annotations/instances_val2017.json',
-        img_prefix=data_root + 'val2017/',
+        ann_file=data_root + 'annotations/coco_val.json',
+        img_prefix=data_root + 'train/',
         pipeline=test_pipeline),
     val=dict(
         type='CocoDataset',
-        ann_file=data_root + 'annotations/instances_val2017.json',
-        img_prefix=data_root + 'val2017/',
+        ann_file=data_root + 'annotations/coco_test.json',
+        img_prefix=data_root + 'test/',
         pipeline=test_pipeline))
 
 # optimizer

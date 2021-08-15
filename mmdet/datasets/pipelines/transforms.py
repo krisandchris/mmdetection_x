@@ -2079,3 +2079,63 @@ class YoloXColorJit:
         results["gt_bboxes"] = boxes
         results["img"] = image_t
         return results
+
+@PIPELINES.register_module()
+class Mosaic:
+    def __init__(self,
+                 img_scale=(640, 640),
+                 center_ratio_range=(0.5, 1.5),
+                 pad_val=114):
+        assert isinstance(img_scale, tuple)
+        self.img_scale = img_scale
+        self.center_ratio_range = center_ratio_range
+        self.pad_val = pad_val
+
+    def __call__(self, results):
+        results = self._mosaic_transform(results)
+        return results
+
+
+    def get_indexes(self, dataset):
+        indexs = [random.randint(0, len(dataset)) for _ in range(3)]
+        return indexs
+
+
+@PIPELINES.register_module()
+class MixUp:
+    def __init__(self,
+                 img_scale=(640, 640),
+                 ratio_range=(0.5, 1.5),
+                 flip_ratio=0.5,
+                 pad_value=114,
+                 max_iters=15,
+                 min_bbox_size=5,
+                 min_area_ratio=0.2,
+                 max_aspect_ratio=20):
+        assert isinstance(img_scale, tuple)
+        self.dynamic_scale = img_scale
+        self.ratio_range = ratio_range
+        self.flip_ratio = flip_ratio
+        self.pad_value = pad_value
+        self.max_iters = max_iters
+        self.min_bbox_size = min_bbox_size
+        self.min_area_ratio = min_area_ratio
+        self.max_aspect_ratio = max_aspect_ratio
+
+    def __call__(self, results):
+        results = self._mixup_transform(results)
+
+        return results
+
+    # 必须要返回非空 gt bbox 数据索引 
+
+
+    def get_indexes(self, dataset):
+        for i in range(self.max_iters):
+            index = random.randint(0, len(dataset))
+            gt_bboxes_i = dataset.get_ann_info(index)['bboxes']
+            if len(gt_bboxes_i) != 0:
+                break
+
+
+        return index

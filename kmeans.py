@@ -145,9 +145,9 @@ def load_dataset(path, types='voc'):
 
 
 if __name__ == '__main__':
-    annFile = 'coco1.json'
+    annFile = 'data/coco/annotations/coco1.json'
     clusters = 4
-    Inputdim = [800,640]   # image shape
+    Inputdim = [640,640]   # image shape
     data = load_dataset(path=annFile, types='coco')
     out = Iou_Kmeans(data, k=clusters)
 
